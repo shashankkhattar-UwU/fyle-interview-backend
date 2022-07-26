@@ -1,8 +1,13 @@
 from .exceptions import FyleError
+from marshmallow.exceptions import ValidationError
+
 
 
 def base_assert(error_code, msg):
-    raise FyleError(status_code=error_code, message=msg)
+    if msg == 'Invalid Grade':
+        raise ValidationError(msg)
+    else:
+        raise FyleError(status_code=error_code, message=msg)
 
 
 def assert_auth(cond, msg='UNAUTHORIZED'):
