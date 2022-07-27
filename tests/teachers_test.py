@@ -1,3 +1,6 @@
+import json
+
+
 def test_get_assignments_teacher_1(client, h_teacher_1):
     response = client.get(
         '/teacher/assignments',
@@ -103,15 +106,36 @@ def test_grade_assignment_draft_assignment(client, h_teacher_1):
 
 #new test:
 
-def test_CUSTOM_grade_assignment_as_student(client, h_student_1):
+def test_CUSTOM_grade_assignment(client, h_teacher_1):
     response = client.post(
         '/teacher/assignments/grade',
-        headers=h_student_1
+        headers=h_teacher_1
         , json={
             "id": 1,
             "grade": "A"
         }
     )
-    assert response.status_code == 403
-    data=response.json
-    assert data['error']=='FyleError'
+    assert response.status_code == 200
+    data=response.json['data']
+    assert data['state']=='GRADED'
+    assert data['teacher_id']==1
+    assert data['id']==1
+    assert data['grade']=='A'
+
+def test_CUSTOM_wrong_path_test(client, h_teacher_1):
+    response = client.post(
+        '/teacher/badpath',
+        headers=h_teacher_1
+        , json={
+            "id": 1,
+            "grade": "A"
+        }
+    )
+    assert response.status_code==404
+
+def test_CUSTOM_no_auth_error(client):
+    response=client.get(
+        '/teacher/assignments',
+        json={}
+    )
+    assert response.status_code==401

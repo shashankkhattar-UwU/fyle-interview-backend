@@ -72,3 +72,27 @@ def test_assingment_resubmitt_error(client, h_student_1):
     assert error_response['error'] == 'FyleError'
     assert error_response["message"] == 'only a draft assignment can be submitted'
 
+def test_CUSTOM_assignment_edit(client, h_student_2):
+    response = client.post(
+        '/student/assignments',
+        headers=h_student_2,
+        json={
+            'id': 5,
+            'content': "new content"
+        })
+    assert response.status_code==200
+    data = response.json['data']
+    assert data['content'] == 'new content'
+
+def test_CUSTOM_teacher_fetching_student_assignments_error(client, h_teacher_1):
+    response=client.get(
+        '/student/assignments',
+        headers=h_teacher_1
+    )
+    assert response.status_code==403
+
+def test_CUSTOM_base_page(client):
+    response=client.get(
+        '/'
+    )
+    assert response.status_code==200
