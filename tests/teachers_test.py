@@ -100,3 +100,18 @@ def test_grade_assignment_draft_assignment(client, h_teacher_1):
     data = response.json
 
     assert data['error'] == 'FyleError'
+
+#new test:
+
+def test_CUSTOM_grade_assignment_as_student(client, h_student_1):
+    response = client.post(
+        '/teacher/assignments/grade',
+        headers=h_student_1
+        , json={
+            "id": 1,
+            "grade": "A"
+        }
+    )
+    assert response.status_code == 403
+    data=response.json
+    assert data['error']=='FyleError'

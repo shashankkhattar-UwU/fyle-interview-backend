@@ -82,7 +82,7 @@ class Assignment(db.Model):
         # assertions.assert_valid(assignment.state is not AssignmentStateEnum.GRADED, 'This assignment has already been graded')
         grades=[_grade.value for _grade in GradeEnum]
         
-        assertions.assert_valid(grade in grades, 'Invalid Grade')
+        assertions.assert_valid2(grade in grades, 'Invalid Grade')
 
         assignment.grade=grade
         assignment.state=AssignmentStateEnum.GRADED

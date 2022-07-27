@@ -72,13 +72,3 @@ def test_assingment_resubmitt_error(client, h_student_1):
     assert error_response['error'] == 'FyleError'
     assert error_response["message"] == 'only a draft assignment can be submitted'
 
-#new Test:
-
-def teacher_getting_student_assignments(client, h_teacher_1):
-    response = client.get(
-        '/student/assignments',
-        headers=h_teacher_1
-    )
-
-    assert response.status_code == 400
-
